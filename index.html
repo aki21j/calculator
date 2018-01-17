@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Calculator</title>
+<style type="text/css">
+	.cal-body{
+		width: 500px;
+		height: 500px;
+		margin: auto;
+		border: 2px solid black;
+		padding: 10px;
+	}
+	.disp{
+		width: 100%;
+		height: 100px;
+		border: 1px solid black;
+
+	}
+	.disp span{
+		font-size: 90px;
+	}
+	button.btn {
+	    min-width: 115px;
+	    height: 20%;
+	    font-size: 60px;
+	    margin: 2px 3px;
+	}
+
+</style>
+</head>
+<body>
+
+	<div class="cal-body">
+		<div class="disp">
+			<span></span>
+		</div>
+		<div class="num-body">
+			<div class="row"> 
+				<button class="btn" onclick="backspace()">Backspace</button>			
+			</div>
+			<button class="btn" value='7'>7</button>
+			<button class="btn" value='8'>8</button>
+			<button class="btn" value='9'>9</button>
+			<button class="btn" value='+'>+</button>
+			<button class="btn" value='4'>4</button>
+			<button class="btn" value='5'>5</button>
+			<button class="btn" value='6'>6</button>
+			<button class="btn" value='-'>-</button>
+			<button class="btn" value='1'>1</button>
+			<button class="btn" value='2'>2</button>
+			<button class="btn" value='3'>3</button>
+			<button class="btn" value='*'>*</button>
+			<button class="btn" value='0'>0</button>
+			<button class="btn" onclick="clearDisplay()">C</button>
+			<button class="btn" value='='>=</button>
+			<button class="btn" value="/">/</button>
+			
+		</div>
+		
+	</div>
+
+
+
+<script type="text/javascript">
+	var container = document.querySelector('.cal-body');
+	var dispcon = document.querySelector('.disp');
+	var dispInner = dispcon.querySelector('span');
+	var btns = container.querySelectorAll('button');
+
+
+	function add(a,b){
+		return a+b;
+
+	}
+	function subtract(a,b){
+		return (a>b ? a-b : b-a);
+
+	}
+	function multiply(a,b){
+		return a*b;
+
+	}
+	function divide(a,b){
+		if(a == 0 || b == 0)
+			return 'error';
+		return a/b;
+
+	}
+	
+	function operate(x,y,op){
+		switch(op){
+			case '+':
+				console.log('adding....');
+				return (add(x,y));
+				break;
+			case '-':
+				console.log('subtracting....');
+				return (subtract(x,y));
+				break;
+			case '*':
+				console.log('multiplying....');
+				return (multiply(x,y));
+				break;
+			case '/':
+				console.log('dividing....');
+				return (divide(x,y));
+				break;
+			default:
+				return 0;
+				break;
+		}
+	}
+
+
+	// var num1 = 0;
+	// var num2 = 0;
+	var oper = '';
+	var temp = '';
+
+	var opIndex = 0;
+
+	function displayNumbers(e){
+		dispInner.textContent +=  e.target.value;
+		temp += e.target.value;
+		if(e.target.value == '+' || e.target.value == '-' || e.target.value == '*' || e.target.value == '/'){
+			oper = e.target.value;
+			// console.log(oper)
+			opIndex = temp.indexOf(oper);
+			// console.log(opIndex);
+		}
+		// console.log(temp);
+
+		if(e.target.value == '='){
+			var num1 = parseInt(temp.slice(0,opIndex));
+			var num2 = parseInt(temp.slice(opIndex+1,-1));
+			// console.log(num1);
+			// console.log(num2);
+			// clearDisplay();
+
+			// dispInner.textContent = '';
+			var result = operate(num1,num2,oper);
+			console.log(result);
+			temp = result;
+			dispInner.textContent = result;
+
+		}
+
+
+	}
+
+	function clearDisplay(){
+		dispInner.textContent = '';
+		temp = 0;
+
+	}
+
+	function backspace(){
+		dispInner.textContent = dispInner.textContent.slice(0,-1);
+		if(dispInner.textContent.length == 0)
+			temp = 0;
+		else
+			temp = parseInt(dispInner.textContent);
+
+		// console.log(temp);
+	}
+
+	btns.forEach(btn => {
+		btn.addEventListener('click', displayNumbers);
+		});
+
+
+</script>
+
+
+</body>
+</html>
